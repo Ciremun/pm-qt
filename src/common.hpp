@@ -14,8 +14,8 @@ typedef SSIZE_T ssize_t;
 
 extern "C"
 {
-    #include "b64/b64.h"
-    #include "aes.h"
+#include "b64/b64.h"
+#include "aes.h"
 }
 
 #define LMAX 255
