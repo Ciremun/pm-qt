@@ -16,14 +16,12 @@ const char *help_s = "\n\
 \n\
 ";
 
-char** decrypt_and_print(uint8_t *key, char *find_label)
+char** decrypt_and_print(uint8_t *key, size_t *total_lines, char *find_label)
 {
     size_t idx = 0;
     char **lines = NULL;
     read_file(DATA_STORE, &lines, &idx);
-
     size_t lmax = LMAX;
-    size_t total_lines = 0;
     char **result_lines = NULL;
     for (size_t i = 0; i < idx; i++) {
         size_t decsize = 0;
@@ -70,9 +68,8 @@ char** decrypt_and_print(uint8_t *key, char *find_label)
                 continue;
             }
         }
-        printf("write %s to %ld\n", (char *)decoded_data, total_lines);
-        result_lines[total_lines++] = (char *)decoded_data;
-        if (total_lines == lmax) {
+        result_lines[(*total_lines)++] = (char *)decoded_data;
+        if (*total_lines == lmax) {
             char **tmp = (char **)realloc(result_lines, lmax * 2 * sizeof(result_lines));
             if (!tmp) {
                 fprintf(stderr, "error: memory allocation failed\n");
@@ -82,7 +79,7 @@ char** decrypt_and_print(uint8_t *key, char *find_label)
             lmax *= 2;
         }
     }
-    if (!total_lines) {
+    if (!*total_lines) {
         printf("info: no results\n");
     }
     for (size_t it = 0; it < idx; it++) {
