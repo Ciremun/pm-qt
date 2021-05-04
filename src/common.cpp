@@ -16,19 +16,16 @@ const char *help_s = "\n\
 \n\
 ";
 
-char** decrypt_and_print(uint8_t *key, size_t *total_lines, char *find_label)
+std::vector<const char*>* decrypt_and_print(uint8_t *key, char *find_label)
 {
     size_t idx = 0;
     char **lines = NULL;
     read_file(DATA_STORE, &lines, &idx);
     size_t lmax = LMAX;
-    char **result_lines = NULL;
+    auto *result_lines = new std::vector<const char*>;
     for (size_t i = 0; i < idx; i++) {
         size_t decsize = 0;
         size_t line_length = strlen(lines[i]);
-        if (result_lines == NULL) {
-            result_lines = (char **)calloc(1, line_length * 2 * sizeof(char));
-        }
         unsigned char *decoded_data = b64_decode_ex(lines[i], line_length, &decsize);
         xcrypt_buffer(key, decoded_data, decsize);
         if (find_label != NULL) {
@@ -68,24 +65,8 @@ char** decrypt_and_print(uint8_t *key, size_t *total_lines, char *find_label)
                 continue;
             }
         }
-        result_lines[(*total_lines)++] = (char *)decoded_data;
-        if (*total_lines == lmax) {
-            char **tmp = (char **)realloc(result_lines, lmax * 2 * sizeof(result_lines));
-            if (!tmp) {
-                fprintf(stderr, "error: memory allocation failed\n");
-                return NULL;
-            }
-            result_lines = tmp;
-            lmax *= 2;
-        }
+        result_lines->push_back((const char*)decoded_data);
     }
-    if (!*total_lines) {
-        printf("info: no results\n");
-    }
-    for (size_t it = 0; it < idx; it++) {
-        free(lines[it]);
-    }
-    free(lines);
     return result_lines;
 }
 
