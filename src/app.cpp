@@ -22,13 +22,7 @@ PM::PM(QWidget *parent, int w, int h) : QWidget(parent), window_width(w), window
     QPushButton *decrypt_test_button = new QPushButton("test decrypt", this);
     connect(decrypt_test_button, &QPushButton::pressed, this, [this] {
         if(!input_key()) return;
-        std::vector<const char*> *v = decrypt_and_print(key, NULL);
-        QString result;
-        for (auto &i : *v)
-        {
-            result.append(i);
-            result.append('\n');
-        }
+        QString result = decrypt_and_print(key, NULL);
         auto *info = new QPlainTextEdit();
         info->document()->setPlainText(result);
         info->setReadOnly(true);

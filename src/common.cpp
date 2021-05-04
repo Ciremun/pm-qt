@@ -16,13 +16,13 @@ const char *help_s = "\n\
 \n\
 ";
 
-std::vector<const char*>* decrypt_and_print(uint8_t *key, char *find_label)
+QString decrypt_and_print(uint8_t *key, char *find_label)
 {
     size_t idx = 0;
     char **lines = NULL;
     read_file(DATA_STORE, &lines, &idx);
     size_t lmax = LMAX;
-    auto *result_lines = new std::vector<const char*>;
+    QString result;
     for (size_t i = 0; i < idx; i++) {
         size_t decsize = 0;
         size_t line_length = strlen(lines[i]);
@@ -65,9 +65,10 @@ std::vector<const char*>* decrypt_and_print(uint8_t *key, char *find_label)
                 continue;
             }
         }
-        result_lines->push_back((const char*)decoded_data);
+        result.append((const char*)decoded_data);
+        result.append('\n');
     }
-    return result_lines;
+    return result;
 }
 
 void encrypt_and_replace(char *find_label, char *data, uint8_t *key)
