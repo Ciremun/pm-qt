@@ -11,35 +11,17 @@ PM::PM(QWidget *parent, int w, int h) : QWidget(parent), window_width(w), window
     main_layout->setMargin(0);
     main_layout->setSpacing(0);
 
-    // size_t aes_key_length = strlen(f.key.value) + 1;
-    // if (aes_key_length > 128)
-    // {
-    //     aes_key = malloc(aes_key_length);
-    // }
-    // else
-    // {
-    //     aes_key = calloc(1, 128);
-    // }
-    // memcpy(aes_key, f.key.value, aes_key_length);
-
-    uint8_t* key = (uint8_t*)"secret key";
-    // uint8_t* key = (uint8_t*)calloc(1, 256);
-    // memcpy(key, "secret_key", 11);
-
     QPushButton *encrypt_test_button = new QPushButton("test encrypt", this);
-    connect(encrypt_test_button, &QPushButton::pressed, this, [this, key] {
-        if (input_key())
-        {
-
-        }
+    connect(encrypt_test_button, &QPushButton::pressed, this, [this] {
+        if(!input_key()) return;
         uint8_t* test_data = (uint8_t*)calloc(1, 256);
         memcpy(test_data, (uint8_t*)"test_data 69", 13);
         encrypt_and_write(key, test_data, 13);
         free(test_data);
     });
     QPushButton *decrypt_test_button = new QPushButton("test decrypt", this);
-    connect(decrypt_test_button, &QPushButton::pressed, this, [this, key] {
-        input_key();
+    connect(decrypt_test_button, &QPushButton::pressed, this, [this] {
+        if(!input_key()) return;
         std::vector<const char*> *v = decrypt_and_print(key, NULL);
         QString result;
         for (auto &i : *v)
@@ -68,12 +50,15 @@ PM::PM(QWidget *parent, int w, int h) : QWidget(parent), window_width(w), window
 
 bool PM::input_key()
 {
-    if (key != NULL) return false;
+    if (key != NULL) return true;
     bool ok;
     QString text = QInputDialog::getText(this, "password?", nullptr, QLineEdit::Normal, nullptr, &ok);
     if (ok && !text.isEmpty())
     {
-        key = (uint8_t*)text.toLocal8Bit().data();
+        size_t key_len = text.length() + 1;
+        if (key_len > 128) key = (uint8_t*)malloc(key_len);
+        else               key = (uint8_t*)calloc(1, 128);
+        memcpy(key, text.toLocal8Bit().data(), key_len);
         return true;
     }
     QMessageBox::critical(this, "Error", "this operation requires password");
