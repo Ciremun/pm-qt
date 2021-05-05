@@ -1,6 +1,6 @@
 # pm-qt
 
-*NOT FINISHED* ![reeHop](https://cdn.betterttv.net/emote/608d1cbc39b5010444d0994e/1x)
+**NOT FINISHED** ![reeHop](https://cdn.betterttv.net/emote/608d1cbc39b5010444d0994e/1x)
 
 ## Build
 
