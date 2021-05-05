@@ -15,10 +15,12 @@ PM::PM(int w, int h) : QWidget(), window_width(w), window_height(h), key(NULL)
     encrypt_test_button->setMinimumSize(QSize(40, 40));
     connect(encrypt_test_button, &QPushButton::pressed, this, [this] {
         if(!input_key()) return;
-        uint8_t* test_data = (uint8_t*)calloc(1, 256);
-        memcpy(test_data, (uint8_t*)"test_data 69", 13);
-        encrypt_and_write(key, test_data, 13);
-        free(test_data);
+        bool ok;
+        QString text = QInputDialog::getText(this, "data?", nullptr, QLineEdit::Normal, nullptr, &ok, CLOSE_BUTTON);
+        if (ok && !text.isEmpty())
+        {
+            encrypt_and_write(key, (uint8_t*)text.toLocal8Bit().data(), text.length() + 1);
+        }
     });
 
     auto *decrypt_test_button = new QPushButton("test decrypt", this);
@@ -46,9 +48,18 @@ PM::PM(int w, int h) : QWidget(), window_width(w), window_height(h), key(NULL)
         info->verticalScrollBar()->setValue(0);
     });
 
+    auto *change_key_button = new QPushButton("change key", this);
+    change_key_button->setMinimumSize(QSize(40, 40));
+    connect(change_key_button, &QPushButton::pressed, this, [this] {
+        free(key);
+        key = NULL;
+        input_key();
+    });
+
     main_layout->setAlignment(Qt::AlignTop);
     main_layout->addWidget(encrypt_test_button);
     main_layout->addWidget(decrypt_test_button);
+    main_layout->addWidget(change_key_button);
     main_layout->addStretch(8);
 
     setLayout(main_layout);
@@ -60,7 +71,7 @@ bool PM::input_key()
 {
     if (key != NULL) return true;
     bool ok;
-    QString text = QInputDialog::getText(this, "password?", nullptr, QLineEdit::Password, nullptr, &ok, CLOSE_BUTTON);
+    QString text = QInputDialog::getText(this, "key?", nullptr, QLineEdit::Password, nullptr, &ok, CLOSE_BUTTON);
     if (ok && !text.isEmpty())
     {
         size_t key_len = text.length() + 1;
@@ -69,6 +80,6 @@ bool PM::input_key()
         memcpy(key, text.toLocal8Bit().data(), key_len);
         return true;
     }
-    QMessageBox::critical(this, "Error", "this operation requires password");
+    QMessageBox::critical(this, "Error", "this operation requires key");
     return false;
 }
