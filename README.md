@@ -1,7 +1,10 @@
 # pm-qt
 
-## Build & Run ᕕ ![monkaS](https://cdn.betterttv.net/emote/56e9f494fff3cc5c35e5287e/1x) ᕗ
+*NOT FINISHED* ![reeHop](https://cdn.betterttv.net/emote/608d1cbc39b5010444d0994e/1x)
 
-    mkdir build && cd build
-    cmake -G "Unix Makefiles" ../ && cmake --build . --parallel
-    ./pm-qt.exe
+## Build
+
+```console
+mkdir build & cd build
+cmake -G "Unix Makefiles" ../ && cmake --build . --parallel
+```
