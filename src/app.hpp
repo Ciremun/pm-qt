@@ -4,7 +4,7 @@
 class PM : public QWidget
 {
 public:
-    PM(QWidget *parent, int w, int h);
+    PM(int w, int h);
 
     bool input_key();
 

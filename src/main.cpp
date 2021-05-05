@@ -6,8 +6,7 @@
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
-    QWidget window;
-    PM *pm = new PM(&window, 600, 400);
+    PM *pm = new PM(600, 400);
 
     pm->show();
     return app.exec();
