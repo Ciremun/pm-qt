@@ -69,8 +69,7 @@ QString decrypt_and_print(uint8_t *key, char *find_label)
         result.append('\n');
         free(decoded_data);
     }
-    for (size_t it = 0; it < idx; it++)
-    {
+    for (size_t it = 0; it < idx; it++) {
         free(lines[it]);
     }
     free(lines);

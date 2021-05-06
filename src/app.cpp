@@ -7,6 +7,12 @@
 
 PM::PM(int w, int h) : QWidget(), window_width(w), window_height(h), key(NULL)
 {
+    auto *db  = new DB("uwu.db");
+    db->exec("select data from data;", [](void* e, int argc, char** argv, char** col) -> int {
+        for (auto i = 0; i < argc; ++i) printf("%s = %s\n", col[i], argv[i]);
+        return 0;
+    });
+
     setWindowTitle("password-manager");
 
     auto *main_layout = new QHBoxLayout();
@@ -72,8 +78,7 @@ bool PM::input_key()
     if (key != NULL) return true;
     bool ok;
     QString text = QInputDialog::getText(this, "key?", nullptr, QLineEdit::Password, nullptr, &ok, CLOSE_BUTTON);
-    if (ok && !text.isEmpty())
-    {
+    if (ok && !text.isEmpty()) {
         size_t key_len = text.length() + 1;
         if (key_len > 128) key = (uint8_t*)malloc(key_len);
         else               key = (uint8_t*)calloc(1, 128);
