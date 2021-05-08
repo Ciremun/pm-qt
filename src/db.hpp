@@ -3,6 +3,9 @@
 
 #include <sqlite3.h>
 
+#define callback_lambda [](void* e, int argc, char** argv, char** col) -> int
+using sqlite_callback = int (*)(void* e, int argc, char** argv, char** col);
+
 struct DB {
     sqlite3 *db;
     char *err;
@@ -21,8 +24,12 @@ struct DB {
         }
     }
 
+    void get_data(sqlite_callback c);
     void insert_data(const char *data);
     void update_data_at_label(const char *new_data, const char *label);
+    void find_label(const char *label, sqlite_callback c);
+    void exec_fmt(sqlite_callback c, const char *fmt, const char *args...);
+    void exec_fmt(const char *fmt, const char *args...);
 };
 
 #endif // DB_HPP

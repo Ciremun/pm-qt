@@ -3,6 +3,8 @@
 
 #include "db.hpp"
 
+#define CLOSE_BUTTON Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint
+
 class PM : public QWidget
 {
 public:
@@ -10,11 +12,12 @@ public:
 
     bool input_key();
 
-private:
     int window_width;
     int window_height;
     uint8_t *key;
     DB *db;
 };
+
+extern PM* pm;
 
 #endif // APP_HPP
