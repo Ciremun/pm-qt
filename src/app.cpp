@@ -2,19 +2,21 @@
 
 #include "app.hpp"
 #include "encrypt.hpp"
+#include "rand.hpp"
 
 PM::PM(int w, int h) : QWidget(), window_width(w), window_height(h), key(NULL)
 {
     db = new DB("data.db");
+    rand = new QRandomGenerator();
 
     setWindowTitle("Менеджер паролей");
 
     auto *main_layout = new QHBoxLayout();
     auto *top_layout = new QHBoxLayout();
 
-    auto *encrypt_test_button = new QPushButton("Запись данных", this);
-    encrypt_test_button->setMinimumSize(QSize(40, 40));
-    connect(encrypt_test_button, &QPushButton::pressed, this, [this] {
+    auto *encrypt_button = new QPushButton("Запись данных", this);
+    encrypt_button->setMinimumSize(QSize(40, 40));
+    connect(encrypt_button, &QPushButton::pressed, this, [this] {
         if(!input_key()) return;
         bool ok;
         QString text = QInputDialog::getText(this, "Что записать?", nullptr, QLineEdit::Normal, nullptr, &ok, CLOSE_BUTTON);
@@ -22,9 +24,9 @@ PM::PM(int w, int h) : QWidget(), window_width(w), window_height(h), key(NULL)
             encrypt_and_write((uint8_t*)text.toLocal8Bit().data(), text.length() + 1);
     });
 
-    auto *decrypt_test_button = new QPushButton("Чтение данных", this);
-    decrypt_test_button->setMinimumSize(QSize(40, 40));
-    connect(decrypt_test_button, &QPushButton::pressed, this, [this] {
+    auto *decrypt_button = new QPushButton("Чтение данных", this);
+    decrypt_button->setMinimumSize(QSize(40, 40));
+    connect(decrypt_button, &QPushButton::pressed, this, [this] {
         if(input_key()) decrypt_and_print(NULL);
     });
 
@@ -72,9 +74,18 @@ PM::PM(int w, int h) : QWidget(), window_width(w), window_height(h), key(NULL)
         QMessageBox::information(this, "Информация", "Операция была выполнена успешно.");
     });
 
+    auto *generate_data_button = new QPushButton("Сгенерировать пароль", this);
+    generate_data_button->setMinimumSize(QSize(40, 40));
+    connect(generate_data_button, &QPushButton::pressed, this, [this] {
+        if(!input_key()) return;
+        int size = rand->bounded(16, 32);
+        encrypt_and_write((uint8_t*)random_string(size).c_str(), size);
+    });
+
     top_layout->setAlignment(Qt::AlignTop);
-    top_layout->addWidget(encrypt_test_button);
-    top_layout->addWidget(decrypt_test_button);
+    top_layout->addWidget(encrypt_button);
+    top_layout->addWidget(generate_data_button);
+    top_layout->addWidget(decrypt_button);
     top_layout->addWidget(change_key_button);
     top_layout->addWidget(clear_button);
     top_layout->addStretch(8);

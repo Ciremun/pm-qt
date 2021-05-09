@@ -16,6 +16,8 @@ public:
     int window_height;
     uint8_t *key;
     DB *db;
+private:
+    QRandomGenerator *rand;
 };
 
 extern PM* pm;

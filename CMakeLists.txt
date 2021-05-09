@@ -4,6 +4,7 @@ project(pm-qt VERSION 0.0.1)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_WIN32_EXECUTABLE OFF)
+set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} -ggdb)
 
 find_package(Qt5 REQUIRED COMPONENTS Widgets)
 find_package(SQLite3)
