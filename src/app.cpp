@@ -1,11 +1,11 @@
 #include <QtWidgets>
 
 #include "app.hpp"
-#include "common.hpp"
+#include "encrypt.hpp"
 
 PM::PM(int w, int h) : QWidget(), window_width(w), window_height(h), key(NULL)
 {
-    db = new DB("uwu.db");
+    db = new DB("data.db");
 
     setWindowTitle("Менеджер паролей");
 
