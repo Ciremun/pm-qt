@@ -28,6 +28,7 @@ struct DB {
     void insert_data(const char *data);
     void update_data_at_label(const char *new_data, const char *label);
     void find_label(const char *label, sqlite_callback c);
+    void clear_data();
     void exec_fmt(sqlite_callback c, const char *fmt, const char *args...);
     void exec_fmt(const char *fmt, const char *args...);
 };

@@ -50,3 +50,8 @@ void DB::update_data_at_label(const char *new_data, const char *label)
 {
     exec_fmt("UPDATE data SET data = '%q' WHERE label = '%q';", new_data, label);
 }
+
+void DB::clear_data()
+{
+    exec("DELETE FROM data;");
+}

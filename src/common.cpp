@@ -51,7 +51,7 @@ void decrypt_and_print(char *label)
     layout->addWidget(info);
 
     auto *dialog = new QDialog(pm, CLOSE_BUTTON);
-    dialog->setWindowTitle("Decrypted data");
+    dialog->setWindowTitle("Данные");
     dialog->setLayout(layout);
     dialog->setModal(true);
     dialog->show();

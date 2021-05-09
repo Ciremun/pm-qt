@@ -19,9 +19,7 @@ PM::PM(int w, int h) : QWidget(), window_width(w), window_height(h), key(NULL)
         bool ok;
         QString text = QInputDialog::getText(this, "Что записать?", nullptr, QLineEdit::Normal, nullptr, &ok, CLOSE_BUTTON);
         if (ok && !text.isEmpty())
-        {
             encrypt_and_write((uint8_t*)text.toLocal8Bit().data(), text.length() + 1);
-        }
     });
 
     auto *decrypt_test_button = new QPushButton("Чтение данных", this);
@@ -67,10 +65,18 @@ PM::PM(int w, int h) : QWidget(), window_width(w), window_height(h), key(NULL)
         dialog->show();
     });
 
+    auto *clear_button = new QPushButton("Удалить данные", this);
+    clear_button->setMinimumSize(QSize(40, 40));
+    connect(clear_button, &QPushButton::pressed, this, [this] {
+        db->clear_data();
+        QMessageBox::information(this, "Информация", "Операция была выполнена успешно.");
+    });
+
     top_layout->setAlignment(Qt::AlignTop);
     top_layout->addWidget(encrypt_test_button);
     top_layout->addWidget(decrypt_test_button);
     top_layout->addWidget(change_key_button);
+    top_layout->addWidget(clear_button);
     top_layout->addStretch(8);
 
     auto *bottom_layout = new QHBoxLayout();
@@ -97,6 +103,6 @@ bool PM::input_key()
         memcpy(key, text.toLocal8Bit().data(), key_len);
         return true;
     }
-    QMessageBox::critical(this, "Ошибка", "для этой операции необходимо ввести ключ");
+    QMessageBox::critical(this, "Ошибка", "Для этой операции необходимо ввести ключ.");
     return false;
 }
