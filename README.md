@@ -4,9 +4,9 @@
 
 ## Dependencies
 
-[Qt5](https://www.qt.io/download-qt-installer)
-[CMake](https://cmake.org/download/)
-[SQLite3](https://www.sqlite.org/download.html)
+[Qt5](https://www.qt.io/download-qt-installer)  
+[CMake](https://cmake.org/download/)  
+[SQLite3](https://www.sqlite.org/download.html)  
 
 ### Windows MSYS2:
 
