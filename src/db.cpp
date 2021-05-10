@@ -29,6 +29,25 @@ void DB::find_label(const char *label, sqlite_callback c)
 
 void DB::insert_data(const char *data, const char *label)
 {
+    if (label)
+    {
+        bool found = false;
+        struct sqlite3_stmt *select_statement;
+        char* query = sqlite3_mprintf("SELECT data FROM data WHERE label = '%q';", label);
+
+        int result = sqlite3_prepare_v2(db, query, -1, &select_statement, NULL);
+        if(result == SQLITE_OK && sqlite3_step(select_statement) == SQLITE_ROW)
+            found = true;
+
+        sqlite3_free(query);
+        sqlite3_finalize(select_statement);
+
+        if (found)
+        {
+            update_data_at_label(data, label);
+            return;
+        }
+    }
     exec_fmt("INSERT INTO data (label, data) VALUES (%Q, %Q);", label, data);
 }
 
