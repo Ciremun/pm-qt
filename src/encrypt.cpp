@@ -26,6 +26,12 @@ void append_data_to_result(const char *col, const char* line)
         decoded_result.append('\n');
         free(decoded_data);
     }
+    else if (line[0] != '\0')
+    {
+        decoded_result.append('[');
+        decoded_result.append(line);
+        decoded_result.append("] ");
+    }
 }
 
 void decrypt_and_print(char *label)

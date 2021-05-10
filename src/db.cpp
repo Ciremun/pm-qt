@@ -19,17 +19,17 @@ DB::DB(const char *path)
 
 void DB::get_data(sqlite_callback c)
 {
-    exec("SELECT data FROM data;", c);
+    exec("SELECT label, data FROM data;", c);
 }
 
 void DB::find_label(const char *label, sqlite_callback c)
 {
-    exec_fmt(c, "SELECT data FROM data WHERE label = '%q';", label);
+    exec_fmt(c, "SELECT label, data FROM data WHERE label = '%q';", label);
 }
 
 void DB::insert_data(const char *data, const char *label)
 {
-    if (label)
+    if (label && label[0] != '\0')
     {
         bool found = false;
         struct sqlite3_stmt *select_statement;
