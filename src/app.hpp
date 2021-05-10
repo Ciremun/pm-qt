@@ -18,6 +18,13 @@ public:
     DB *db;
 private:
     QRandomGenerator *rand;
+    int mouseClick_X_Coordinate;
+    int mouseClick_Y_Coordinate;
+
+protected:
+    void paintEvent(QPaintEvent* event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
 };
 
 extern PM* pm;

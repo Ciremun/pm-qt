@@ -15,6 +15,7 @@ struct DB {
     template <typename F = std::nullptr_t>
     void exec(const char *sql, F callback = 0)
     {
+        printf("exec: %s\n", sql);
         int rc = sqlite3_exec(db, sql, callback, 0, &err);
 
         if (rc != SQLITE_OK) {
@@ -24,13 +25,27 @@ struct DB {
         }
     }
 
+    template<typename... Args>
+    void exec_fmt(sqlite_callback c, const char *fmt, Args... args)
+    {
+        char* query = sqlite3_mprintf(fmt, args...);
+        exec(query, c);
+        sqlite3_free(query);
+    }
+
+    template<typename... Args>
+    void exec_fmt(const char *fmt, Args... args)
+    {
+        char* query = sqlite3_mprintf(fmt, args...);
+        exec(query);
+        sqlite3_free(query);
+    }
+
     void get_data(sqlite_callback c);
-    void insert_data(const char *data);
+    void insert_data(const char *data, const char *label);
     void update_data_at_label(const char *new_data, const char *label);
     void find_label(const char *label, sqlite_callback c);
     void clear_data();
-    void exec_fmt(sqlite_callback c, const char *fmt, const char *args...);
-    void exec_fmt(const char *fmt, const char *args...);
 };
 
 #endif // DB_HPP
