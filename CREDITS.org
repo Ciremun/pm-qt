@@ -1,2 +1,8 @@
-- Fonts:
+- Tiny AES
+    - https://github.com/kokke/tiny-AES-c
+
+- b64.c
+    - https://github.com/littlstar/b64.c
+
+- Victor Mono Font
     - https://github.com/rubjo/victor-mono
