@@ -39,12 +39,14 @@ void decrypt_and_print(std::string label_str)
     const char *label = label_str.c_str();
     if (label && label[0] != '\0') {
         pm->db->find_label(label, callback_lambda {
+            (void)e;
             for (int i = 0; i < argc; ++i)
                 append_data_to_result(col[i], argv[i]);
             return 0;
         });
     } else {
         pm->db->get_data(callback_lambda {
+            (void)e;
             for (int i = 0; i < argc; ++i)
                 append_data_to_result(col[i], argv[i]);
             return 0;

@@ -135,8 +135,10 @@ PM::PM(int w, int h) : QWidget(), window_width(w), window_height(h), key(NULL)
     connect(generate_data_button, &QPushButton::pressed, this, [this] {
         if (!input_key())
             return;
+        bool ok;
+        QString label = QInputDialog::getText(this, "Метка?", nullptr, QLineEdit::Normal, nullptr, &ok, CLOSE_BUTTON);
         int size = rand->bounded(16, 32);
-        encrypt_and_write(random_string(size));
+        encrypt_and_write(random_string(size), label.toStdString());
     });
 
     top_layout->setAlignment(Qt::AlignTop);
@@ -185,6 +187,7 @@ bool PM::input_key()
 
 void PM::paintEvent(QPaintEvent *event)
 {
+    (void)event;
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
     painter.setPen(Qt::NoPen);
