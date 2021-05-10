@@ -24,7 +24,7 @@ void DB::get_data(sqlite_callback c)
 
 void DB::find_label(const char *label, sqlite_callback c)
 {
-    exec_fmt(c, "SELECT label, data FROM data WHERE label = '%q';", label);
+    exec_fmt(c, "SELECT label, data FROM data WHERE label LIKE '%q%%';", label);
 }
 
 void DB::insert_data(const char *data, const char *label)

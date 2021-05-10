@@ -34,9 +34,9 @@ void append_data_to_result(const char *col, const char* line)
     }
 }
 
-void decrypt_and_print(char *label)
+void decrypt_and_print(const char *label)
 {
-    if (label) {
+    if (label[0] != '\0') {
         pm->db->find_label(label, callback_lambda {
             for (int i = 0; i < argc; ++i)
                 append_data_to_result(col[i], argv[i]);

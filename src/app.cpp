@@ -76,8 +76,13 @@ PM::PM(int w, int h) : QWidget(), window_width(w), window_height(h), key(NULL)
     auto *decrypt_button = new QPushButton("Чтение данных", this);
     decrypt_button->setMinimumSize(QSize(40, 40));
     connect(decrypt_button, &QPushButton::pressed, this, [this] {
-        if (input_key())
-            decrypt_and_print(NULL);
+        if (!input_key()) return;
+        bool ok;
+        QString text = QInputDialog::getText(this, "Метка?", nullptr, QLineEdit::Normal, nullptr, &ok, CLOSE_BUTTON);
+        if (ok)
+        {
+            decrypt_and_print(text.toStdString().c_str());
+        }
     });
 
     auto *change_key_button = new QPushButton("Сменить ключ", this);
