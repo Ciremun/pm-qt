@@ -29,6 +29,7 @@ void DB::find_label(const char *label, sqlite_callback c)
 
 void DB::insert_data(const char *data, const char *label)
 {
+    printf("label: %s\ndata: %s\n", label, (char *)data);
     if (label && label[0] != '\0')
     {
         bool found = false;

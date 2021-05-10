@@ -34,8 +34,9 @@ void append_data_to_result(const char *col, const char* line)
     }
 }
 
-void decrypt_and_print(const char *label)
+void decrypt_and_print(std::string label_str)
 {
+    const char *label = label_str.c_str();
     if (label && label[0] != '\0') {
         pm->db->find_label(label, callback_lambda {
             for (int i = 0; i < argc; ++i)
@@ -70,10 +71,29 @@ void decrypt_and_print(const char *label)
 
     decoded_result = "";
 }
-void encrypt_and_write(const char* label, uint8_t *data, size_t data_length)
+
+void encrypt_and_write(std::string data_str, std::string label_str)
 {
-    xcrypt_buffer(pm->key, data, data_length);
-    char *encoded_data = b64_encode(data, data_length);
+    const char *label = label_str.c_str();
+    size_t data_size = data_str.length() + 1;
+    uint8_t *data = (uint8_t*)data_str.c_str();
+
+    encrypt_and_write(label, data, data_size);
+}
+
+void encrypt_and_write(std::string data_str)
+{
+    uint8_t *data = (uint8_t*)data_str.c_str();
+    size_t data_size = data_str.length() + 1;
+
+    encrypt_and_write(NULL, data, data_size);
+}
+
+void encrypt_and_write(const char *label, uint8_t *data, size_t data_size)
+{
+    xcrypt_buffer(pm->key, data, data_size);
+
+    char *encoded_data = b64_encode(data, data_size);
     pm->db->insert_data(encoded_data, label);
     free(encoded_data);
 }

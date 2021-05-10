@@ -55,9 +55,9 @@ PM::PM(int w, int h) : QWidget(), window_width(w), window_height(h), key(NULL)
                 input_dialog->close();
                 return;
             }
-            const char *data = data_field->text().toStdString().c_str();
-            const char *label = find_label_field->text().toStdString().c_str();
-            encrypt_and_write(label, (uint8_t *)data, data_field->text().length() + 1);
+            std::string label = find_label_field->text().toStdString();
+            std::string data = data_field->text().toStdString();
+            encrypt_and_write(data, label);
             input_dialog->close();
         });
 
@@ -79,10 +79,7 @@ PM::PM(int w, int h) : QWidget(), window_width(w), window_height(h), key(NULL)
         if (!input_key()) return;
         bool ok;
         QString text = QInputDialog::getText(this, "Метка?", nullptr, QLineEdit::Normal, nullptr, &ok, CLOSE_BUTTON);
-        if (ok)
-        {
-            decrypt_and_print(text.toStdString().c_str());
-        }
+        if (ok) decrypt_and_print(text.toStdString());
     });
 
     auto *change_key_button = new QPushButton("Сменить ключ", this);
@@ -139,7 +136,7 @@ PM::PM(int w, int h) : QWidget(), window_width(w), window_height(h), key(NULL)
         if (!input_key())
             return;
         int size = rand->bounded(16, 32);
-        encrypt_and_write(NULL, (uint8_t *)random_string(size).c_str(), size);
+        encrypt_and_write(random_string(size));
     });
 
     top_layout->setAlignment(Qt::AlignTop);

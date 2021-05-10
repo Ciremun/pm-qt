@@ -7,13 +7,15 @@ extern "C"
 #include "b64/b64.h"
 }
 
-#include <QString>
+#include <string>
 
 #include "db.hpp"
 
 void xcrypt_buffer(uint8_t *key, uint8_t *buffer, size_t buffer_size);
-void decrypt_and_print(const char *label);
-void encrypt_and_write(const char* label, uint8_t *data, size_t data_length);
+void decrypt_and_print(std::string label_str);
+void encrypt_and_write(std::string data_str);
+void encrypt_and_write(std::string data_str, std::string label_str);
+void encrypt_and_write(const char *label, uint8_t *data, size_t data_size);
 unsigned char* decode_line(const char *line);
 
 #endif // ENCRYPT_HPP
