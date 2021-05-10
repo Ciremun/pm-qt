@@ -1,6 +1,6 @@
 # pm-qt
 
-![preview](https://user-images.githubusercontent.com/38132413/117666187-47154680-b1ac-11eb-8faf-ba1c9b6b80e5.png)
+<img src="https://user-images.githubusercontent.com/38132413/117678109-c0fefd00-b1b7-11eb-8625-a67ae24e7674.png" alt="preview" width="540" height="360">
 
 ## Dependencies
 
