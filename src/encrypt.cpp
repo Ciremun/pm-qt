@@ -74,7 +74,8 @@ void decrypt_and_print(std::string label_str)
 
 void encrypt_and_write(std::string data_str, std::string label_str)
 {
-    const char *label = label_str.c_str();
+    const char *label = NULL;
+    if (!label_str.empty()) label = label_str.c_str();
     size_t data_size = data_str.length() + 1;
     uint8_t *data = (uint8_t*)data_str.c_str();
 
