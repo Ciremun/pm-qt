@@ -1,5 +1,7 @@
 # pm-qt
 
+![preview](https://user-images.githubusercontent.com/38132413/117666187-47154680-b1ac-11eb-8faf-ba1c9b6b80e5.png)
+
 ## Build
 
 ### Windows MSYS2:
