@@ -138,7 +138,7 @@ PM::PM(int w, int h) : QWidget(), window_width(w), window_height(h), key(NULL)
         bool ok;
         QString label = QInputDialog::getText(this, "Метка?", nullptr, QLineEdit::Normal, nullptr, &ok, CLOSE_BUTTON);
         int size = rand->bounded(16, 32);
-        encrypt_and_write(random_string(size), label.toStdString());
+        if (ok) encrypt_and_write(random_string(size), label.toStdString());
     });
 
     top_layout->setAlignment(Qt::AlignTop);
