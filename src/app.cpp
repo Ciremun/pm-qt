@@ -36,9 +36,9 @@ PM::PM(int w, int h) : QWidget(), window_width(w), window_height(h), key(NULL)
         auto *input_dialog_layout = new QVBoxLayout(input_dialog);
         auto *input_fields_layout = new QVBoxLayout(input_dialog);
         auto *buttons_at_the_bottom_layout = new QHBoxLayout(input_dialog);
-        auto *find_label_label = new QLabel("Метка", input_dialog);
+        auto *find_label_label = new QLabel("Имя записи", input_dialog);
         auto *find_label_field = new QLineEdit(input_dialog);
-        auto *data_label = new QLabel("Данные", input_dialog);
+        auto *data_label = new QLabel("Текст записи", input_dialog);
         auto *data_field = new QLineEdit(input_dialog);
         auto *ok_button = new QPushButton("OK", input_dialog);
         auto *cancel_button = new QPushButton("Cancel", input_dialog);
@@ -67,7 +67,7 @@ PM::PM(int w, int h) : QWidget(), window_width(w), window_height(h), key(NULL)
         input_dialog_layout->addLayout(input_fields_layout);
         input_dialog_layout->addLayout(buttons_at_the_bottom_layout);
 
-        input_dialog->setWindowTitle("Что записать?");
+        input_dialog->setWindowTitle("Новая запись");
         input_dialog->setModal(true);
         input_dialog->setAttribute(Qt::WA_DeleteOnClose);
         input_dialog->show();
@@ -78,15 +78,15 @@ PM::PM(int w, int h) : QWidget(), window_width(w), window_height(h), key(NULL)
     connect(decrypt_button, &QPushButton::pressed, this, [this] {
         if (!input_key()) return;
         bool ok;
-        QString text = QInputDialog::getText(this, "Метка?", nullptr, QLineEdit::Normal, nullptr, &ok, CLOSE_BUTTON);
+        QString text = QInputDialog::getText(this, "Поиск по имени", nullptr, QLineEdit::Normal, nullptr, &ok, CLOSE_BUTTON);
         if (ok) decrypt_and_print(text.toStdString());
     });
 
-    auto *change_key_button = new QPushButton("Сменить ключ", this);
+    auto *change_key_button = new QPushButton("Сменить ключ шифрования", this);
     change_key_button->setMinimumSize(QSize(40, 40));
     connect(change_key_button, &QPushButton::pressed, this, [this] {
         bool ok;
-        QString text = QInputDialog::getText(this, "Новый ключ?", nullptr, QLineEdit::Password, nullptr, &ok, CLOSE_BUTTON);
+        QString text = QInputDialog::getText(this, "Новый ключ шифрования?", nullptr, QLineEdit::Password, nullptr, &ok, CLOSE_BUTTON);
         if (ok && !text.isEmpty())
         {
             free(key);
@@ -131,7 +131,7 @@ PM::PM(int w, int h) : QWidget(), window_width(w), window_height(h), key(NULL)
     clear_button->setMinimumSize(QSize(40, 40));
     connect(clear_button, &QPushButton::pressed, this, [this] {
         auto reply = QMessageBox::question(this, "Удалить данные", "Вы уверены?",
-                                           QMessageBox::Yes|QMessageBox::No);
+                                           QMessageBox::Yes | QMessageBox::No);
         if (reply == QMessageBox::Yes)
         {
             db->clear_data();
@@ -145,7 +145,7 @@ PM::PM(int w, int h) : QWidget(), window_width(w), window_height(h), key(NULL)
         if (!input_key())
             return;
         bool ok;
-        QString label = QInputDialog::getText(this, "Метка?", nullptr, QLineEdit::Normal, nullptr, &ok, CLOSE_BUTTON);
+        QString label = QInputDialog::getText(this, "Поиск по имени", nullptr, QLineEdit::Normal, nullptr, &ok, CLOSE_BUTTON);
         int size = rand->bounded(16, 32);
         if (ok) encrypt_and_write(random_string(size), label.toStdString());
     });
@@ -179,7 +179,7 @@ bool PM::input_key()
     if (key != NULL)
         return true;
     bool ok;
-    QString text = QInputDialog::getText(this, "Ключ?", nullptr, QLineEdit::Password, nullptr, &ok, CLOSE_BUTTON);
+    QString text = QInputDialog::getText(this, "Ключ шифрования?", nullptr, QLineEdit::Password, nullptr, &ok, CLOSE_BUTTON);
     if (ok && !text.isEmpty()) {
         size_t key_len = text.length() + 1;
         if (key_len > 128)
@@ -189,7 +189,7 @@ bool PM::input_key()
         memcpy(key, text.toLocal8Bit().data(), key_len);
         return true;
     }
-    QMessageBox::critical(this, "Ошибка", "Для этой операции необходимо ввести ключ.");
+    QMessageBox::critical(this, "Ошибка", "Для этой операции необходимо ввести ключ шифрования.");
     return false;
 }
 
