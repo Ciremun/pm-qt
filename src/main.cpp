@@ -27,6 +27,6 @@ int main(int argc, char **argv)
 
     pm = new PM(600, 400);
     pm->show();
-    
+
     return app.exec();
 }

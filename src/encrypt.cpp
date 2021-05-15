@@ -19,15 +19,12 @@ unsigned char* decode_line(const char *line)
 
 void append_data_to_result(const char *col, const char* line)
 {
-    if (strcmp(col, "data") == 0)
-    {
+    if (strcmp(col, "data") == 0) {
         unsigned char* decoded_data = decode_line(line);
         decoded_result.append((const char*)decoded_data);
         decoded_result.append('\n');
         free(decoded_data);
-    }
-    else if (line && line[0] != '\0')
-    {
+    } else if (line && line[0] != '\0') {
         decoded_result.append('[');
         decoded_result.append(line);
         decoded_result.append("] ");

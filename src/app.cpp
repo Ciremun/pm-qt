@@ -126,8 +126,13 @@ PM::PM(int w, int h) : QWidget(), window_width(w), window_height(h), key(NULL)
     auto *clear_button = new QPushButton("Удалить данные", this);
     clear_button->setMinimumSize(QSize(40, 40));
     connect(clear_button, &QPushButton::pressed, this, [this] {
-        db->clear_data();
-        QMessageBox::information(this, "Информация", "Операция была выполнена успешно.");
+        auto reply = QMessageBox::question(this, "Удалить данные", "Вы уверены?",
+                                           QMessageBox::Yes|QMessageBox::No);
+        if (reply == QMessageBox::Yes)
+        {
+            db->clear_data();
+            QMessageBox::information(this, "Информация", "Операция была выполнена успешно.");
+        }
     });
 
     auto *generate_data_button = new QPushButton("Сгенерировать пароль", this);
@@ -171,8 +176,7 @@ bool PM::input_key()
         return true;
     bool ok;
     QString text = QInputDialog::getText(this, "Ключ?", nullptr, QLineEdit::Password, nullptr, &ok, CLOSE_BUTTON);
-    if (ok && !text.isEmpty())
-    {
+    if (ok && !text.isEmpty()) {
         size_t key_len = text.length() + 1;
         if (key_len > 128)
             key = (uint8_t *)malloc(key_len);
