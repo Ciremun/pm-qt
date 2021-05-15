@@ -56,5 +56,5 @@ void DB::update_data_at_label(const char *new_data, const char *label)
 
 void DB::clear_data()
 {
-    exec("DELETE FROM data;");
+    exec("DELETE FROM data; VACUUM;");
 }
