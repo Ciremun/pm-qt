@@ -1,3 +1,5 @@
+#include <limits>
+
 #include <QtWidgets>
 
 #include "app.hpp"
@@ -41,7 +43,7 @@ PM::PM(int w, int h) : QWidget(), window_width(w), window_height(h), key(NULL)
         auto *data_label = new QLabel("Текст записи", input_dialog);
         auto *data_field = new QLineEdit(input_dialog);
         auto *ok_button = new QPushButton("OK", input_dialog);
-        auto *cancel_button = new QPushButton("Cancel", input_dialog);
+        auto *cancel_button = new QPushButton("Отмена", input_dialog);
 
         input_fields_layout->addWidget(find_label_label);
         input_fields_layout->addWidget(find_label_field);
@@ -143,10 +145,67 @@ PM::PM(int w, int h) : QWidget(), window_width(w), window_height(h), key(NULL)
     connect(generate_data_button, &QPushButton::pressed, this, [this] {
         if (!input_key())
             return;
-        bool ok;
-        QString label = QInputDialog::getText(this, "Поиск по имени", nullptr, QLineEdit::Normal, nullptr, &ok, CLOSE_BUTTON);
-        int size = rand->bounded(16, 32);
-        if (ok) encrypt_and_write(random_string(size), label.toStdString());
+
+        auto *input_dialog = new QDialog(this, CLOSE_BUTTON);
+        input_dialog->setMinimumWidth(280);
+
+        auto *input_dialog_layout = new QVBoxLayout(input_dialog);
+        auto *input_fields_layout = new QVBoxLayout(input_dialog);
+        auto *buttons_at_the_bottom_layout = new QHBoxLayout(input_dialog);
+        auto *password_name_label = new QLabel("Имя пароля", input_dialog);
+
+        auto *password_name_field = new QLineEdit(input_dialog);
+        password_name_field->setPlaceholderText("(Опционально)");
+
+        auto *password_length_label = new QLabel("Длина пароля", input_dialog);
+
+        auto *password_length_field = new QLineEdit(input_dialog);
+        password_length_field->setValidator(new QIntValidator(1, std::numeric_limits<int>::max(), input_dialog));
+        password_length_field->setPlaceholderText("По умолчанию: от 16 до 32 символов");
+
+        auto *ok_button = new QPushButton("OK", input_dialog);
+        auto *cancel_button = new QPushButton("Отмена", input_dialog);
+
+        input_fields_layout->addWidget(password_name_label);
+        input_fields_layout->addWidget(password_name_field);
+        input_fields_layout->addWidget(password_length_label);
+        input_fields_layout->addWidget(password_length_field);
+
+        connect(cancel_button, SIGNAL(clicked()), input_dialog, SLOT(close()));
+        connect(ok_button, &QPushButton::pressed, input_dialog, [=] {
+            QString password_length_str = password_length_field->text();
+            unsigned int size;
+            bool ok = false;
+            if (!password_length_str.isEmpty())
+            {
+                unsigned int password_length = password_length_str.toUInt(&ok, 10);
+                if (ok)
+                    size = password_length;
+                else
+                    QMessageBox::critical(this, "Ошибка", "Ошибка конвертации длины пароля.");
+            }
+            if (!ok)
+            {
+                size = rand->bounded(16, 32);
+            }
+            std::string random_str = random_string(size);
+            QString password_name_qstr = password_name_field->text();
+            std::string password_name_str = password_name_qstr.toStdString();
+            encrypt_and_write(random_str, password_name_str);
+            input_dialog->close();
+        });
+
+        buttons_at_the_bottom_layout->addStretch(5);
+        buttons_at_the_bottom_layout->addWidget(ok_button, 0, Qt::AlignRight);
+        buttons_at_the_bottom_layout->addWidget(cancel_button, 0, Qt::AlignRight);
+
+        input_dialog_layout->addLayout(input_fields_layout);
+        input_dialog_layout->addLayout(buttons_at_the_bottom_layout);
+
+        input_dialog->setWindowTitle("Сгенерировать пароль");
+        input_dialog->setModal(true);
+        input_dialog->setAttribute(Qt::WA_DeleteOnClose);
+        input_dialog->show();
     });
 
     top_layout->setAlignment(Qt::AlignTop);
