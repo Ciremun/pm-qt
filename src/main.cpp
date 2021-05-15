@@ -8,6 +8,14 @@ PM* pm;
 
 int main(int argc, char **argv)
 {
+
+#if 0
+    #include <windows.h>
+    AllocConsole();
+    FILE* f;
+    freopen_s(&f, "CONOUT$", "w", stdout);
+#endif
+
     QApplication app(argc, argv);
 
     QPixmap pixmap;

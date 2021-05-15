@@ -77,9 +77,7 @@ PM::PM(int w, int h) : QWidget(), window_width(w), window_height(h), key(NULL)
     decrypt_button->setMinimumSize(QSize(40, 40));
     connect(decrypt_button, &QPushButton::pressed, this, [this] {
         if (!input_key()) return;
-        bool ok;
-        QString text = QInputDialog::getText(this, "Поиск по имени", nullptr, QLineEdit::Normal, nullptr, &ok, CLOSE_BUTTON);
-        if (ok) decrypt_and_print(text.toStdString());
+        decrypt_and_print();
     });
 
     auto *change_key_button = new QPushButton("Сменить ключ шифрования", this);
@@ -96,7 +94,8 @@ PM::PM(int w, int h) : QWidget(), window_width(w), window_height(h), key(NULL)
                 key = (uint8_t *)malloc(key_len);
             else
                 key = (uint8_t *)calloc(1, 128);
-            memcpy(key, text.toLocal8Bit().data(), key_len);
+            QByteArray ba = text.toUtf8();
+            memcpy(key, ba.data(), key_len);
         }
     });
 
@@ -186,7 +185,8 @@ bool PM::input_key()
             key = (uint8_t *)malloc(key_len);
         else
             key = (uint8_t *)calloc(1, 128);
-        memcpy(key, text.toLocal8Bit().data(), key_len);
+        QByteArray ba = text.toUtf8();
+        memcpy(key, ba.data(), key_len);
         return true;
     }
     QMessageBox::critical(this, "Ошибка", "Для этой операции необходимо ввести ключ шифрования.");
