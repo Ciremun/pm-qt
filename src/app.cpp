@@ -105,10 +105,14 @@ PM::PM(int w, int h) : QWidget(), window_width(w), window_height(h), key(NULL)
     connect(about_button, &QPushButton::pressed, this, [this] {
         auto *dialog = new QDialog(this, CLOSE_BUTTON);
         auto *about_dialog_layout = new QHBoxLayout(dialog);
-        auto *about_dialog_text = new QLabel("Password manager\n"
+        auto *about_dialog_text = new QLabel("Менеджер паролей\n"
                                              "https://github.com/Ciremun/pm-qt\n\n"
                                              "Victor Mono Font\n"
-                                             "https://github.com/rubjo/victor-mono",
+                                             "https://github.com/rubjo/victor-mono\n\n"
+                                             "Tiny AES\n"
+                                             "https://github.com/kokke/tiny-AES-c\n\n"
+                                             "b64.c\n"
+                                             "https://github.com/littlstar/b64.c\n\n",
                                              dialog);
         about_dialog_text->setTextInteractionFlags(Qt::TextSelectableByMouse);
 
