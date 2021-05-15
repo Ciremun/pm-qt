@@ -39,9 +39,15 @@ PM::PM(int w, int h) : QWidget(), window_width(w), window_height(h), key(NULL)
         auto *input_fields_layout = new QVBoxLayout(input_dialog);
         auto *buttons_at_the_bottom_layout = new QHBoxLayout(input_dialog);
         auto *find_label_label = new QLabel("Имя записи", input_dialog);
+
         auto *find_label_field = new QLineEdit(input_dialog);
+        find_label_field->setPlaceholderText("(Опционально)");
+
         auto *data_label = new QLabel("Текст записи", input_dialog);
+
         auto *data_field = new QLineEdit(input_dialog);
+        data_field->setPlaceholderText("Введите текст");
+
         auto *ok_button = new QPushButton("OK", input_dialog);
         auto *cancel_button = new QPushButton("Отмена", input_dialog);
 
