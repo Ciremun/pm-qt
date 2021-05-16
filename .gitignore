@@ -1,5 +1,6 @@
 .vscode/
 build/
+tests/build/
 
 *.swp
 *.o
