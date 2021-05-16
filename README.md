@@ -8,11 +8,15 @@
 [CMake](https://cmake.org/download/)  
 [SQLite3](https://www.sqlite.org/download.html)  
 
-### Windows MSYS2:
+### Windows [MSYS2](https://www.msys2.org/):
 
-    pacman -S mingw-w64-x86_64-sqlite3 mingw-w64-x86_64-cmake mingw-w64-x86_64-gcc mingw-w64-x86_64-qt5-static
+```bash
+pacman -S mingw-w64-x86_64-sqlite3 mingw-w64-x86_64-cmake mingw-w64-x86_64-gcc mingw-w64-x86_64-qt5-static
+```
 
 ## Build
 
-    mkdir build & cd build
-    cmake -DCMAKE_BUILD_TYPE=Release -G"Unix Makefiles" ../ && cmake --build . --parallel
+```console
+mkdir build & cd build
+cmake -DCMAKE_BUILD_TYPE=Release -G"Unix Makefiles" ../ && cmake --build . --parallel
+```
