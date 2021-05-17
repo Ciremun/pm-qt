@@ -17,6 +17,11 @@ DB::DB(const char *path)
     exec("CREATE TABLE IF NOT EXISTS data (id integer PRIMARY KEY, label text, data text NOT NULL);");
 }
 
+DB::~DB()
+{
+    sqlite3_close(db);
+}
+
 void DB::get_data(sqlite_callback c)
 {
     exec("SELECT label, data FROM data;", c);

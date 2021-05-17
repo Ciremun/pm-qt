@@ -11,6 +11,7 @@ struct DB {
     char *err;
 
     DB(const char *path);
+    ~DB();
 
     template <typename F = std::nullptr_t>
     void exec(const char *sql, F callback = 0)
