@@ -278,3 +278,8 @@ void PM::mouseMoveEvent(QMouseEvent *event)
 {
     move(event->globalX() - mouseClick_X_Coordinate, event->globalY() - mouseClick_Y_Coordinate);
 }
+
+PM::~PM()
+{
+    delete db;
+}

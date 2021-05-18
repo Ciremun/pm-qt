@@ -9,6 +9,7 @@ class PM : public QWidget
 {
 public:
     PM(int w, int h);
+    ~PM();
 
     bool input_key();
 
