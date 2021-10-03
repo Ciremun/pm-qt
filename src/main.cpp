@@ -22,10 +22,7 @@ int main(int argc, char **argv)
     pixmap.loadFromData(QByteArray::fromBase64(PM_ICON));
     app.setWindowIcon(QIcon(pixmap));
 
-    char *font_data_ptr = (char*)malloc(sizeof(VICTOR_MONO_REGULAR));
-    strcpy(font_data_ptr, VICTOR_MONO_REGULAR);
-
-    auto font_data = QByteArray::fromBase64(font_data_ptr);
+    auto font_data = QByteArray::fromBase64(VICTOR_MONO_REGULAR);
     int id = QFontDatabase::addApplicationFontFromData(font_data);
     QString family = QFontDatabase::applicationFontFamilies(id).at(0);
     QFont victor_mono(family, 10);
