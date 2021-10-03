@@ -3,10 +3,11 @@
 
 #include <sqlite3.h>
 
-#define callback_lambda [](void* e, int argc, char** argv, char** col) -> int
-using sqlite_callback = int (*)(void* e, int argc, char** argv, char** col);
+#define callback_lambda [](void *e, int argc, char **argv, char **col) -> int
+using sqlite_callback = int (*)(void *e, int argc, char **argv, char **col);
 
-struct DB {
+struct DB
+{
     sqlite3 *db;
     char *err;
 
@@ -19,25 +20,25 @@ struct DB {
         printf("exec: %s\n", sql);
         int rc = sqlite3_exec(db, sql, callback, 0, &err);
 
-        if (rc != SQLITE_OK) {
+        if (rc != SQLITE_OK)
+        {
             fprintf(stderr, "SQL error: %s\n", err);
             sqlite3_free(err);
             return;
         }
     }
 
-    template<typename... Args>
+    template <typename... Args>
     void exec_fmt(sqlite_callback c, const char *fmt, Args... args)
     {
-        char* query = sqlite3_mprintf(fmt, args...);
+        char *query = sqlite3_mprintf(fmt, args...);
         exec(query, c);
         sqlite3_free(query);
     }
 
-    template<typename... Args>
-    void exec_fmt(const char *fmt, Args... args)
+    template <typename... Args> void exec_fmt(const char *fmt, Args... args)
     {
-        char* query = sqlite3_mprintf(fmt, args...);
+        char *query = sqlite3_mprintf(fmt, args...);
         exec(query);
         sqlite3_free(query);
     }

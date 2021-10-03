@@ -2,8 +2,10 @@
 
 std::string random_string(size_t length)
 {
-    auto randchar = []() -> char {
-        static const char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-+";
+    auto randchar = []() -> char
+    {
+        static const char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                                      "OPQRSTUVWXYZ0123456789!@#$%^&*()-+";
         static const size_t max_index = (sizeof(charset) - 1);
         return charset[rand() % max_index];
     };

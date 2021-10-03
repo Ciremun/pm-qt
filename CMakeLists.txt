@@ -22,7 +22,7 @@ find_package(SQLite3)
 set(SOURCES src/pm-qt.cpp src/aes.c src/b64/encode.c src/b64/decode.c src/b64/buffer.c)
 
 if (NOT DEFINED TESTS)
-    add_executable(${PROJECT_NAME} src/main.cpp ${SOURCES})
+    add_executable(${PROJECT_NAME} src/main.cpp ${SOURCES} src/app.hpp)
     target_link_libraries(${PROJECT_NAME} Qt5::Widgets)
     target_link_libraries(${PROJECT_NAME} ${SQLite3_LIBRARIES})
 else()

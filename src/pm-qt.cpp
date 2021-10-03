@@ -1,4 +1,5 @@
 #include "app.cpp"
 #include "db.cpp"
 #include "encrypt.cpp"
+#include "lang.cpp"
 #include "rand.cpp"

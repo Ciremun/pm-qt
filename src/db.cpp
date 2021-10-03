@@ -7,20 +7,19 @@ DB::DB(const char *path)
 {
     int rc = sqlite3_open(path, &db);
 
-    if (rc != SQLITE_OK) {
+    if (rc != SQLITE_OK)
+    {
 
         fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(db));
         sqlite3_close(db);
         exit(1);
     }
 
-    exec("CREATE TABLE IF NOT EXISTS data (id integer PRIMARY KEY, label text, data text NOT NULL);");
+    exec("CREATE TABLE IF NOT EXISTS data (id integer PRIMARY KEY, label text, "
+         "data text NOT NULL);");
 }
 
-DB::~DB()
-{
-    sqlite3_close(db);
-}
+DB::~DB() { sqlite3_close(db); }
 
 void DB::get_data(sqlite_callback c)
 {
@@ -34,19 +33,22 @@ void DB::find_label(const char *label, sqlite_callback c)
 
 void DB::insert_data(const char *data, const char *label)
 {
-    if (label && label[0] != '\0') {
+    if (label && label[0] != '\0')
+    {
         bool found = false;
         struct sqlite3_stmt *select_statement;
-        char* query = sqlite3_mprintf("SELECT data FROM data WHERE label = '%q';", label);
+        char *query =
+            sqlite3_mprintf("SELECT data FROM data WHERE label = '%q';", label);
 
         int result = sqlite3_prepare_v2(db, query, -1, &select_statement, NULL);
-        if(result == SQLITE_OK && sqlite3_step(select_statement) == SQLITE_ROW)
+        if (result == SQLITE_OK && sqlite3_step(select_statement) == SQLITE_ROW)
             found = true;
 
         sqlite3_free(query);
         sqlite3_finalize(select_statement);
 
-        if (found) {
+        if (found)
+        {
             update_data_at_label(data, label);
             return;
         }
@@ -56,10 +58,8 @@ void DB::insert_data(const char *data, const char *label)
 
 void DB::update_data_at_label(const char *new_data, const char *label)
 {
-    exec_fmt("UPDATE data SET data = '%q' WHERE label = '%q';", new_data, label);
+    exec_fmt("UPDATE data SET data = '%q' WHERE label = '%q';", new_data,
+             label);
 }
 
-void DB::clear_data()
-{
-    exec("DELETE FROM data; VACUUM;");
-}
+void DB::clear_data() { exec("DELETE FROM data; VACUUM;"); }

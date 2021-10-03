@@ -1,0 +1,61 @@
+#include "lang.hpp"
+
+const char* lang_en[lang_string_kind::count] = {
+    "Write data",
+    "Read data",
+    "Generate password",
+    "Change cypher key",
+    "Wipe data",
+    "About",
+    "Cypher key?",
+    "New entry",
+    "Entry name",
+    "(Optional)",
+    "Entry data",
+    "Enter data",
+    "Cancel",
+    "Find by name",
+    "Data",
+    "Password name",
+    "Password length",
+    "(Optional) default: 16-32 chars",
+    "Password manager",
+    "Are you sure?",
+    "New cypher key?",
+    "Info",
+    "Success",
+    "Error",
+    "Couldn't convert password length to int",
+    "This operation requires a cypher key"
+};
+
+const char* lang_ru[lang_string_kind::count] = {
+    "Запись данных",
+    "Чтение данных",
+    "Сгенерировать пароль",
+    "Сменить ключ шифрования",
+    "Удалить данные",
+    "О программе",
+    "Ключ шифрования?",
+    "Новая запись",
+    "Имя записи",
+    "(Опционально)",
+    "Текст записи",
+    "Введите текст",
+    "Отмена",
+    "Поиск по имени",
+    "Данные",
+    "Имя пароля",
+    "Длина пароля",
+    "По умолчанию: от 16 до 32 символов",
+    "Менеджер паролей",
+    "Вы уверены?",
+    "Новый ключ шифрования?",
+    "Информация",
+    "Операция была выполнена успешно",
+    "Ошибка",
+    "Ошибка конвертации длины пароля",
+    "Для этой операции необходимо ввести ключ шифрования"
+};
+
+const char** lang = lang_en;

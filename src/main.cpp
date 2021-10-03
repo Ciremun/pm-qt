@@ -4,13 +4,13 @@
 #include "app.hpp"
 #include "external.hpp"
 
-PM* pm;
+PM *pm;
 
 int main(int argc, char **argv)
 {
 
 #if 0
-    #include <windows.h>
+#include <windows.h>
     AllocConsole();
     FILE* f;
     freopen_s(&f, "CONOUT$", "w", stdout);
